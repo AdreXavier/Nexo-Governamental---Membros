@@ -17,7 +17,7 @@ const UniversidadesAnalise = () => {
     
     // Nordeste
     { estado: 'AL', regiao: 'Nordeste', universidades: ['Universidade Federal de Alagoas'], membros: 4, temDireito: true, densidade: 4.0 },
-    { estado: 'BA', regiao: 'Nordeste', universidades: ['Universidade Federal da Bahia', 'Universidade Estadual do Sudoeste da Bahia', 'Faculdades Santo Agostinho de Vitória da Conquista', 'Faculdade Santo Agostinho'], membros: 5, temDireito: true, densidade: 1.25 },
+    { estado: 'BA', regiao: 'Nordeste', universidades: ['Universidade Federal da Bahia', 'Universidade Estadual do Sudoeste da Bahia', 'Faculdades Santo Agostinho de Vitória da Conquista'], membros: 5, temDireito: true, densidade: 1.25 },
     { estado: 'CE', regiao: 'Nordeste', universidades: ['Universidade Federal do Ceará'], membros: 1, temDireito: true, densidade: 1.0 },
     { estado: 'MA', regiao: 'Nordeste', universidades: ['Universidade Federal do Maranhão'], membros: 1, temDireito: true, densidade: 1.0 },
     { estado: 'PB', regiao: 'Nordeste', universidades: ['Universidade Federal da Paraíba', 'Universidade Estadual da Paraíba'], membros: 11, temDireito: true, densidade: 5.5 },
