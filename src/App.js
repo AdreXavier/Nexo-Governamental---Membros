@@ -332,7 +332,6 @@ const UniversidadesAnalise = () => {
             <div className="bg-red-50 border-l-4 border-red-400 p-4">
               <h4 className="text-lg font-semibold text-red-800">⚠️ Correlações Curiosas:</h4>
               <ul className="mt-2 space-y-2 text-red-700">
-                <li><strong>Universidades Tecnológicas:</strong> Tendem a não ter curso de Direito (Unicamp, UFSCar, FATEC)</li>
                 <li><strong>Estados Pequenos:</strong> Alguns têm densidade muito alta (AP: 3.0, RO: 3.0)</li>
                 <li><strong>São Paulo:</strong> Concentra 43% dos membros, mas nem todas universidades têm Direito</li>
                 <li><strong>Nordeste:</strong> PE se destaca com 26 membros, muito acima da média regional</li>
@@ -343,7 +342,6 @@ const UniversidadesAnalise = () => {
               <h4 className="text-lg font-semibold text-green-800">📊 Padrões Identificados:</h4>
               <ul className="mt-2 space-y-2 text-green-700">
                 <li><strong>Universidades Federais:</strong> Quase todas têm curso de Direito</li>
-                <li><strong>Instituições Especializadas:</strong> FATECs, institutos técnicos tendem a não ter</li>
                 <li><strong>Capitais:</strong> Estados com universidades nas capitais têm maior representação</li>
                 <li><strong>Região Sudeste:</strong> Domina com 62% dos membros em apenas 4 estados</li>
               </ul>
