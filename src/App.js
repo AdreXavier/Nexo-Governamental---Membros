@@ -3,7 +3,6 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   PieChart, Pie, Cell, ScatterChart, Scatter
 } from 'recharts';
-import ReactMarkdown from 'react-markdown';
 
 const UniversidadesAnalise = () => {
   const [activeTab, setActiveTab] = useState('tabela');
@@ -102,7 +101,7 @@ Os dados sugerem que existe uma **oportunidade de expansão** significativa nas 
     'FATEC Sebrae'
   ];
 
-  // Dados para gráficos - CORRIGIDO
+  // Dados para gráficos
   const dadosPorRegiao = dadosEstados.reduce((acc, curr) => {
     const existing = acc.find(item => item.regiao === curr.regiao);
     if (existing) {
@@ -123,7 +122,7 @@ Os dados sugerem que existe uma **oportunidade de expansão** significativa nas 
     .sort((a, b) => b.membros - a.membros)
     .slice(0, 10);
 
-  // Dados para scatter plot - CORRIGIDO
+  // Dados para scatter plot
   const dadosScatter = dadosEstados
     .filter(d => d.membros > 0)
     .map(d => ({
@@ -135,7 +134,64 @@ Os dados sugerem que existe uma **oportunidade de expansão** significativa nas 
 
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7c7c', '#8dd1e1'];
 
- return (
+  // Componente para renderizar markdown básico
+  const MarkdownRenderer = ({ children }) => {
+    const renderMarkdown = (text) => {
+      return text
+        .split('\n')
+        .map((line, index) => {
+          // Headers
+          if (line.startsWith('# ')) {
+            return <h1 key={index} className="text-3xl font-bold mb-4 text-gray-800">{line.slice(2)}</h1>;
+          }
+          if (line.startsWith('## ')) {
+            return <h2 key={index} className="text-2xl font-semibold mb-3 text-gray-700">{line.slice(3)}</h2>;
+          }
+          if (line.startsWith('### ')) {
+            return <h3 key={index} className="text-xl font-medium mb-2 text-gray-600">{line.slice(4)}</h3>;
+          }
+          
+          // Separador
+          if (line.startsWith('---')) {
+            return <hr key={index} className="my-6 border-gray-300" />;
+          }
+          
+          // Lista
+          if (line.startsWith('- ')) {
+            const text = line.slice(2);
+            return (
+              <li key={index} className="mb-1 text-gray-700">
+                <span dangerouslySetInnerHTML={{
+                  __html: text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                }} />
+              </li>
+            );
+          }
+          
+          // Parágrafo vazio
+          if (line.trim() === '') {
+            return <div key={index} className="mb-4"></div>;
+          }
+          
+          // Parágrafo normal
+          return (
+            <p key={index} className="mb-3 text-gray-700 leading-relaxed">
+              <span dangerouslySetInnerHTML={{
+                __html: line
+                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                  .replace(/\*(.*?)\*/g, '<em>$1</em>')
+              }} />
+            </p>
+          );
+        });
+    };
+
+    return <div className="prose max-w-none">{renderMarkdown(children)}</div>;
+  };
+
+  return (
     <div className="w-full max-w-6xl mx-auto p-6 bg-white">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
         Análise de Universidades e Cursos de Direito por Estado
@@ -400,20 +456,15 @@ Os dados sugerem que existe uma **oportunidade de expansão** significativa nas 
           </div>
         </div>
       )}
-    </div>
-  );
-};
 
- {/* NOVA ABA: Relatório Completo (Markdown) */}
+      {/* Relatório Completo (Markdown) */}
       {activeTab === 'texto' && (
-        <div className="prose max-w-none p-4 bg-gray-50 rounded-lg">
-          <ReactMarkdown>{textoPersonalizado}</ReactMarkdown>
+        <div className="p-4 bg-gray-50 rounded-lg">
+          <MarkdownRenderer>{textoPersonalizado}</MarkdownRenderer>
         </div>
       )}
     </div>
   );
 };
-
-export default UniversidadesAnalise;
 
 export default UniversidadesAnalise;
