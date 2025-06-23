@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ScatterChart, Scatter } from 'recharts';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  PieChart, Pie, Cell, ScatterChart, Scatter
+} from 'recharts';
+import ReactMarkdown from 'react-markdown';
 
 const UniversidadesAnalise = () => {
   const [activeTab, setActiveTab] = useState('tabela');
-    const [textoPersonalizado, setTextoPersonalizado] = useState(`# Análise das Universidades Brasileiras
+  const [textoPersonalizado, setTextoPersonalizado] = useState(`# Análise das Universidades Brasileiras
 
 ## Resumo Executivo
 
@@ -131,15 +135,15 @@ Os dados sugerem que existe uma **oportunidade de expansão** significativa nas 
 
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7c7c', '#8dd1e1'];
 
-  return (
+ return (
     <div className="w-full max-w-6xl mx-auto p-6 bg-white">
       <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
         Análise de Universidades e Cursos de Direito por Estado
       </h1>
-      
-      {/* Navegação por abas */}
+
+      {/* Abas de navegação */}
       <div className="flex flex-wrap gap-2 mb-6 border-b">
-        {['tabela', 'graficos', 'correlacoes', 'insights'].map((tab) => (
+        {['tabela', 'graficos', 'correlacoes', 'insights', 'texto'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -153,6 +157,7 @@ Os dados sugerem que existe uma **oportunidade de expansão** significativa nas 
             {tab === 'graficos' && 'Gráficos'}
             {tab === 'correlacoes' && 'Correlações'}
             {tab === 'insights' && 'Insights'}
+            {tab === 'texto' && 'Relatório Completo'}
           </button>
         ))}
       </div>
