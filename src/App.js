@@ -3,6 +3,52 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 
 const UniversidadesAnalise = () => {
   const [activeTab, setActiveTab] = useState('tabela');
+    const [textoPersonalizado, setTextoPersonalizado] = useState(`# Análise das Universidades Brasileiras
+
+## Resumo Executivo
+
+Este estudo revela **importantes disparidades regionais** na distribuição de universidades e cursos de Direito pelo Brasil. Os dados mostram uma *concentração significativa* na região Sudeste, especialmente em São Paulo.
+
+## Principais Descobertas
+
+### Concentração Geográfica
+- **São Paulo** concentra 149 membros (43% do total nacional)
+- **Região Sudeste** possui 217 membros (62% do total)
+- Apenas **3 estados** (SP, RJ, MG) representam mais da metade dos membros
+
+### Estados sem Representação
+Os seguintes estados não possuem membros:
+- Roraima (RR)
+- Tocantins (TO) 
+- Espírito Santo (ES)
+
+### Densidade Universitária
+- **Distrito Federal** apresenta a maior densidade: 9,33 membros por universidade
+- Estados menores como Amapá e Rondônia também têm alta densidade
+- São Paulo, apesar do volume, tem densidade moderada (9,93)
+
+## Observações Importantes
+
+### Universidades Tecnológicas
+Algumas universidades de excelência em áreas tecnológicas **não oferecem curso de Direito**:
+- Unicamp
+- UFSCar  
+- UFABC
+- FATEC Sebrae
+
+### Padrão Regional
+- **Norte**: Baixa representação, exceto Pará
+- **Nordeste**: Pernambuco se destaca com 26 membros
+- **Centro-Oeste**: Brasília domina a região
+- **Sul**: Distribuição mais equilibrada
+
+## Conclusões
+
+Os dados sugerem que existe uma **oportunidade de expansão** significativa nas regiões Norte e Nordeste, bem como a necessidade de avaliar a inclusão de cursos de Direito em universidades tecnológicas de prestígio.
+
+---
+
+*Relatório elaborado com base nos dados de 347 membros distribuídos em 27 estados brasileiros.*`);
 
   // Dados organizados por estado com universidades
   const dadosEstados = [
