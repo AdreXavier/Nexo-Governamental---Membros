@@ -404,4 +404,16 @@ Os dados sugerem que existe uma **oportunidade de expansão** significativa nas 
   );
 };
 
+ {/* NOVA ABA: Relatório Completo (Markdown) */}
+      {activeTab === 'texto' && (
+        <div className="prose max-w-none p-4 bg-gray-50 rounded-lg">
+          <ReactMarkdown>{textoPersonalizado}</ReactMarkdown>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default UniversidadesAnalise;
+
 export default UniversidadesAnalise;
