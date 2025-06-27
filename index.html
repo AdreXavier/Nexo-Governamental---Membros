@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Dados | Nexo Governamental XI de Agosto</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Estilos personalizados para complementar o Tailwind */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Um cinza muito claro, inspirado no fundo de sites acadêmicos */
+        }
+        /* Estilo para a aba ativa, inspirado na cor institucional da USP */
+        .tab-active {
+            border-bottom: 3px solid #005A9C;
+            color: #005A9C;
+            font-weight: 600;
+        }
+        .stat-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Cabeçalho -->
+        <header class="text-center mb-10">
+            <div class="flex justify-center items-center gap-4 mb-4">
+                <!-- Substitua o SVG abaixo pela sua logo. Você pode usar uma tag <img> se tiver a URL da imagem. -->
+                <svg class="h-16 w-16 text-[#005A9C]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                </svg>
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-[#005A9C]">Nexo Governamental XI de Agosto</h1>
+                    <p class="text-lg text-gray-600">Análise de Dados de Estudantes</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navegação por Abas -->
+        <div class="mb-8 border-b border-gray-300">
+            <nav class="flex flex-wrap -mb-px" id="tabs">
+                <a href="#" data-tab="tabela" class="tab-button tab-active text-lg px-4 py-3 border-b-2 border-transparent">Tabela Completa</a>
+                <a href="#" data-tab="graficos" class="tab-button text-lg px-4 py-3 border-b-2 border-transparent">Gráficos</a>
+                <a href="#" data-tab="correlacoes" class="tab-button text-lg px-4 py-3 border-b-2 border-transparent">Correlações</a>
+                <a href="#" data-tab="insights" class="tab-button text-lg px-4 py-3 border-b-2 border-transparent">Insights</a>
+                <a href="#" data-tab="relatorio" class="tab-button text-lg px-4 py-3 border-b-2 border-transparent">Relatório</a>
+            </nav>
+        </div>
+
+        <!-- Conteúdo das Abas -->
+        <main id="tab-content">
+
+            <!-- Aba: Tabela Completa -->
+            <section id="tabela" class="tab-pane active">
+                <div class="bg-white p-6 rounded-xl shadow-md space-y-8">
+                    <h2 class="text-2xl font-bold text-gray-700">Visão Geral dos Dados por Estado</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="p-3 font-semibold text-sm text-gray-600 border-b">Estado</th>
+                                    <th class="p-3 font-semibold text-sm text-gray-600 border-b">Região</th>
+                                    <th class="p-3 font-semibold text-sm text-gray-600 border-b">Universidades</th>
+                                    <th class="p-3 font-semibold text-sm text-gray-600 border-b text-center">Qtd. Univ.</th>
+                                    <th class="p-3 font-semibold text-sm text-gray-600 border-b text-center">Membros</th>
+                                    <th class="p-3 font-semibold text-sm text-gray-600 border-b text-center">Densidade</th>
+                                    <th class="p-3 font-semibold text-sm text-gray-600 border-b text-center">Status Direito</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-gray-200">
+                                <!-- Dados serão inseridos aqui via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                        <h3 class="text-lg font-semibold text-red-800 mb-2">
+                            Universidades de Destaque SEM Curso de Direito
+                        </h3>
+                        <ul id="sem-direito-list" class="list-disc list-inside text-red-700 space-y-1">
+                             <!-- Dados serão inseridos aqui via JS -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Aba: Gráficos -->
+            <section id="graficos" class="tab-pane hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold mb-4 text-gray-700">Distribuição por Região</h3>
+                        <div class="relative h-96">
+                            <canvas id="regiaoChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold mb-4 text-gray-700">Top 10 Estados por Membros</h3>
+                        <div class="relative h-96">
+                            <canvas id="topEstadosChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md lg:col-span-2">
+                        <h3 class="text-xl font-bold mb-4 text-gray-700 text-center">Distribuição Percentual por Região</h3>
+                        <div class="mx-auto" style="max-width: 400px;">
+                           <canvas id="pieRegiaoChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Aba: Correlações -->
+            <section id="correlacoes" class="tab-pane hidden">
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-bold mb-4 text-gray-700">Densidade vs. Número de Universidades</h3>
+                        <p class="text-sm text-gray-500 mb-4">Análise da relação entre a quantidade de universidades em um estado e a densidade de membros por universidade.</p>
+                        <div class="relative h-96">
+                            <canvas id="scatterChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                           <h4 class="text-lg font-semibold text-blue-800 mb-3">Estados com MAIOR Densidade</h4>
+                           <div id="maior-densidade-list" class="space-y-2">
+                               <!-- Dados inseridos via JS -->
+                           </div>
+                        </div>
+                        <div class="bg-yellow-50 p-6 rounded-lg border border-yellow-200">
+                           <h4 class="text-lg font-semibold text-yellow-800 mb-3">Estados SEM Representação</h4>
+                           <div id="sem-representacao-list" class="space-y-2">
+                               <!-- Dados inseridos via JS -->
+                           </div>
+                        </div>
+                     </div>
+                </div>
+            </section>
+
+            <!-- Aba: Insights -->
+            <section id="insights" class="tab-pane hidden">
+                <div class="space-y-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="stat-card bg-white p-6 rounded-xl shadow-md text-center">
+                            <h3 class="text-lg font-semibold text-gray-500">Total Geral</h3>
+                            <p class="text-5xl font-extrabold text-blue-600">347</p>
+                            <p class="text-gray-600">membros em todo o país</p>
+                        </div>
+                        <div class="stat-card bg-white p-6 rounded-xl shadow-md text-center">
+                            <h3 class="text-lg font-semibold text-gray-500">Concentração em SP</h3>
+                            <p class="text-5xl font-extrabold text-amber-500">43%</p>
+                            <p class="text-gray-600">do total de membros</p>
+                        </div>
+                        <div class="stat-card bg-white p-6 rounded-xl shadow-md text-center">
+                            <h3 class="text-lg font-semibold text-gray-500">Cobertura Nacional</h3>
+                            <p class="text-5xl font-extrabold text-green-600">85%</p>
+                            <p class="text-gray-600">dos estados representados</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-gray-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
+                           <h4 class="text-xl font-bold text-blue-800 mb-3">🎯 Principais Descobertas</h4>
+                           <ul class="mt-2 space-y-3 text-gray-700">
+                              <li><strong>Concentração Extrema:</strong> SP, RJ e MG juntos representam 62% de todos os membros.</li>
+                              <li><strong>Paradoxo Tecnológico:</strong> Unicamp e UFSCar, referências em tecnologia, não têm Direito.</li>
+                              <li><strong>Densidade Surpreendente:</strong> DF tem a maior densidade (9,33 membros/universidade).</li>
+                              <li><strong>Lacunas Regionais:</strong> Roraima, Tocantins e Espírito Santo não têm representação.</li>
+                           </ul>
+                        </div>
+                         <div class="bg-gray-50 border-l-4 border-amber-500 p-6 rounded-r-lg">
+                           <h4 class="text-xl font-bold text-amber-800 mb-3">⚠️ Correlações Curiosas</h4>
+                           <ul class="mt-2 space-y-3 text-gray-700">
+                               <li><strong>Estados Pequenos:</strong> Alguns têm densidade muito alta (ex: AP: 3.0, RO: 3.0), indicando forte engajamento por instituição.</li>
+                               <li><strong>São Paulo:</strong> Concentra 43% dos membros, mas nem todas as suas universidades de renome possuem o curso de Direito.</li>
+                               <li><strong>Nordeste:</strong> Pernambuco se destaca com 26 membros, muito acima da média regional, sugerindo um polo de interesse.</li>
+                           </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Aba: Relatório Completo -->
+            <section id="relatorio" class="tab-pane hidden">
+                <div class="bg-white p-8 rounded-xl shadow-md prose max-w-none">
+                    <h2 class="text-2xl font-bold text-gray-800">Análise das Universidades Brasileiras</h2>
+                    
+                    <h3 class="text-xl font-semibold mt-6 mb-2">Resumo Executivo</h3>
+                    <p>Este estudo revela <strong>importantes disparidades regionais</strong> na distribuição de universidades e cursos de Direito pelo Brasil. Os dados mostram uma <em>concentração significativa</em> na região Sudeste, especialmente em São Paulo, que centraliza 43% dos membros do projeto.</p>
+
+                    <h3 class="text-xl font-semibold mt-6 mb-2">Principais Descobertas</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold">Concentração Geográfica</h4>
+                            <ul class="list-disc list-inside mt-2">
+                                <li><strong>São Paulo</strong> concentra 149 membros (43% do total nacional).</li>
+                                <li>A <strong>Região Sudeste</strong> possui 217 membros (62% do total).</li>
+                                <li>Apenas <strong>3 estados</strong> (SP, RJ, MG) representam mais da metade dos membros.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Estados sem Representação</h4>
+                            <p>Os seguintes estados não possuem membros: Roraima (RR), Tocantins (TO) e Espírito Santo (ES).</p>
+                        </div>
+                         <div>
+                            <h4 class="font-semibold">Densidade Universitária</h4>
+                             <ul class="list-disc list-inside mt-2">
+                                <li>O <strong>Distrito Federal</strong> apresenta a maior densidade: 9,33 membros por universidade.</li>
+                                <li>Estados menores como Amapá e Rondônia também têm alta densidade.</li>
+                                <li>São Paulo, apesar do volume, tem densidade moderada (9,93).</li>
+                             </ul>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mt-6 mb-2">Observações Importantes</h3>
+                     <div>
+                        <h4 class="font-semibold">Padrão Regional</h4>
+                         <ul class="list-disc list-inside mt-2">
+                            <li><strong>Norte:</strong> Baixa representação, com exceção do Pará.</li>
+                            <li><strong>Nordeste:</strong> Pernambuco se destaca com 26 membros.</li>
+                            <li><strong>Centro-Oeste:</strong> Brasília domina a região.</li>
+                            <li><strong>Sul:</strong> Distribuição mais equilibrada entre os estados.</li>
+                         </ul>
+                    </div>
+
+                    <hr class="my-6">
+
+                    <h3 class="text-xl font-semibold mt-6 mb-2">Conclusões</h3>
+                    <p>Os dados sugerem que existe uma <strong>oportunidade de expansão</strong> significativa nas regiões Norte e Nordeste. Além disso, a análise aponta para a necessidade de avaliar a inclusão de cursos de Direito em universidades tecnológicas de prestígio para ampliar o alcance e a diversidade do projeto.</p>
+
+                    <footer class="mt-8 text-sm text-gray-500 italic">
+                        Relatório elaborado com base nos dados de 347 membros distribuídos em 27 estados brasileiros.
+                    </footer>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // --- DADOS ---
+        const dadosEstados = [
+            // Norte
+            { estado: 'AC', regiao: 'Norte', universidades: ['Universidade Federal do Acre (UFAC)'], membros: 1, temDireito: true, densidade: 1.0 },
+            { estado: 'AP', regiao: 'Norte', universidades: ['Universidade do Estado do Amapá'], membros: 3, temDireito: true, densidade: 3.0 },
+            { estado: 'AM', regiao: 'Norte', universidades: ['Universidade Federal do Amazonas', 'Universidade do Estado do Amazonas'], membros: 3, temDireito: true, densidade: 1.5 },
+            { estado: 'PA', regiao: 'Norte', universidades: ['Universidade Federal do Pará', 'Faculdade de Itaituba (FAI)'], membros: 4, temDireito: true, densidade: 2.0 },
+            { estado: 'RO', regiao: 'Norte', universidades: ['Universidade Federal de Rondônia'], membros: 3, temDireito: true, densidade: 3.0 },
+            { estado: 'RR', regiao: 'Norte', universidades: [], membros: 0, temDireito: false, densidade: 0 },
+            { estado: 'TO', regiao: 'Norte', universidades: [], membros: 0, temDireito: false, densidade: 0 },
+            
+            // Nordeste
+            { estado: 'AL', regiao: 'Nordeste', universidades: ['Universidade Federal de Alagoas'], membros: 4, temDireito: true, densidade: 4.0 },
+            { estado: 'BA', regiao: 'Nordeste', universidades: ['Universidade Federal da Bahia', 'Universidade Estadual de Feira de Santana', 'Universidade Estadual de Santa Cruz', 'Universidade do Estado da Bahia'], membros: 5, temDireito: true, densidade: 1.25 },
+            { estado: 'CE', regiao: 'Nordeste', universidades: ['Universidade Federal do Ceará'], membros: 1, temDireito: true, densidade: 1.0 },
+            { estado: 'MA', regiao: 'Nordeste', universidades: ['Universidade Federal do Maranhão'], membros: 1, temDireito: true, densidade: 1.0 },
+            { estado: 'PB', regiao: 'Nordeste', universidades: ['Universidade Federal da Paraíba', 'Universidade Estadual da Paraíba'], membros: 11, temDireito: true, densidade: 5.5 },
+            { estado: 'PE', regiao: 'Nordeste', universidades: ['Universidade Federal de Pernambuco', 'Universidade de Pernambuco', 'Universidade Católica de Pernambuco', 'Faculdade de Direito do Recife'], membros: 26, temDireito: true, densidade: 6.5 },
+            { estado: 'PI', regiao: 'Nordeste', universidades: ['Universidade Estadual do Piauí'], membros: 1, temDireito: true, densidade: 1.0 },
+            { estado: 'RN', regiao: 'Nordeste', universidades: ['Universidade Federal do Rio Grande do Norte'], membros: 1, temDireito: true, densidade: 1.0 },
+            { estado: 'SE', regiao: 'Nordeste', universidades: ['Universidade Federal de Sergipe', 'Universidade Tiradentes'], membros: 5, temDireito: true, densidade: 2.5 },
+            
+            // Centro-Oeste
+            { estado: 'DF', regiao: 'Centro-Oeste', universidades: ['Universidade de Brasília (UnB)', 'Centro Universitário de Brasília (CEUB)', 'IDP'], membros: 28, temDireito: true, densidade: 9.33 },
+            { estado: 'GO', regiao: 'Centro-Oeste', universidades: ['Universidade Federal de Goiás', 'Instituto de Pós-graduação e Graduação de Goiás'], membros: 5, temDireito: true, densidade: 2.5 },
+            { estado: 'MT', regiao: 'Centro-Oeste', universidades: ['Universidade do Estado de Mato Grosso', 'UNIVAG - Centro Universitário de Várzea Grande'], membros: 2, temDireito: true, densidade: 1.0 },
+            { estado: 'MS', regiao: 'Centro-Oeste', universidades: ['Universidade Federal de Mato Grosso do Sul'], membros: 1, temDireito: true, densidade: 1.0 },
+            
+            // Sudeste
+            { estado: 'ES', regiao: 'Sudeste', universidades: [], membros: 0, temDireito: false, densidade: 0 },
+            { estado: 'MG', regiao: 'Sudeste', universidades: ['Universidade Federal de Minas Gerais', 'PUC Minas', 'Universidade Federal de Juiz de Fora', 'Universidade Federal de Ouro Preto', 'Universidade Federal de Uberlândia', 'Faculdade de Direito Milton Campos'], membros: 31, temDireito: true, densidade: 5.17 },
+            { estado: 'RJ', regiao: 'Sudeste', universidades: ['Universidade Federal do Rio de Janeiro', 'Universidade do Estado do Rio de Janeiro', 'PUC-Rio', 'Fundação Getúlio Vargas (FGV)', 'Universidade Federal Fluminense'], membros: 37, temDireito: true, densidade: 7.4 },
+            { estado: 'SP', regiao: 'Sudeste', universidades: ['Universidade de São Paulo (USP)', 'PUC-SP', 'Mackenzie', 'FGV Direito SP', 'Faculdade de Direito de São Bernardo do Campo', 'UNESP', 'Toledo Prudente Centro Universitário', 'Faculdade de Direito de Ribeirão Preto', 'Faculdade de Direito de Franca', 'Damásio Educacional', 'Universidade de Ribeirão Preto', 'Universidade São Judas Tadeu', 'FAAP', 'Insper', 'Escola Paulista de Direito'], membros: 149, temDireito: 'parcial', densidade: 9.93 },
+            
+            // Sul
+            { estado: 'PR', regiao: 'Sul', universidades: ['Universidade Federal do Paraná', 'Pontifícia Universidade Católica do Paraná', 'Universidade Estadual de Londrina', 'Universidade Estadual de Maringá (UEM)'], membros: 10, temDireito: true, densidade: 2.5 },
+            { estado: 'RS', regiao: 'Sul', universidades: ['Universidade Federal do Rio Grande do Sul', 'PUCRS', 'UNISINOS', 'Universidade Federal de Santa Maria'], membros: 8, temDireito: true, densidade: 2.0 },
+            { estado: 'SC', regiao: 'Sul', universidades: ['Universidade Federal de Santa Catarina (UFSC)'], membros: 3, temDireito: true, densidade: 3.0 }
+        ];
+
+        const universidadesSemDireito = [
+            'Universidade Estadual de Campinas (Unicamp)',
+            'Universidade Federal de São Carlos (UFSCar)',
+            'Universidade Federal do ABC (UFABC)',
+            'FATEC Sebrae'
+        ];
+
+        // --- LÓGICA DE MANIPULAÇÃO DO DOM E GRÁFICOS ---
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Lógica das Abas ---
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Desativa todas as abas e painéis
+                    tabs.forEach(item => item.classList.remove('tab-active'));
+                    tabPanes.forEach(pane => pane.classList.add('hidden'));
+
+                    // Ativa a aba e o painel clicado
+                    tab.classList.add('tab-active');
+                    const targetPaneId = tab.getAttribute('data-tab');
+                    document.getElementById(targetPaneId).classList.remove('hidden');
+                });
+            });
+
+            // --- Preenchimento da Tabela ---
+            const tableBody = document.getElementById('table-body');
+            dadosEstados.forEach((estado, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                
+                let statusClass, statusText;
+                if (estado.temDireito === true) {
+                    statusClass = 'bg-green-100 text-green-800';
+                    statusText = 'Sim';
+                } else if (estado.temDireito === 'parcial') {
+                    statusClass = 'bg-yellow-100 text-yellow-800';
+                    statusText = 'Parcial';
+                } else {
+                    statusClass = 'bg-red-100 text-red-800';
+                    statusText = 'Não';
+                }
+
+                row.innerHTML = `
+                    <td class="p-3 font-medium text-gray-800 border-b border-gray-200">${estado.estado}</td>
+                    <td class="p-3 text-gray-600 border-b border-gray-200">${estado.regiao}</td>
+                    <td class="p-3 text-sm text-gray-600 border-b border-gray-200">
+                        ${estado.universidades.length > 0 ? estado.universidades.join(', ') : '<i class="text-gray-400">N/A</i>'}
+                    </td>
+                    <td class="p-3 text-center text-gray-600 border-b border-gray-200">${estado.universidades.length}</td>
+                    <td class="p-3 text-center font-semibold text-gray-800 border-b border-gray-200">${estado.membros}</td>
+                    <td class="p-3 text-center text-gray-600 border-b border-gray-200">${estado.densidade.toFixed(2)}</td>
+                    <td class="p-3 text-center border-b border-gray-200">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${statusClass}">
+                            ${statusText}
+                        </span>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            const semDireitoList = document.getElementById('sem-direito-list');
+            universidadesSemDireito.forEach(univ => {
+                const li = document.createElement('li');
+                li.textContent = univ;
+                semDireitoList.appendChild(li);
+            });
+
+            // --- Processamento de Dados para Gráficos ---
+            const dadosPorRegiao = dadosEstados.reduce((acc, curr) => {
+                let region = acc.find(item => item.regiao === curr.regiao);
+                if (!region) {
+                    region = { regiao: curr.regiao, membros: 0, universidades: 0 };
+                    acc.push(region);
+                }
+                region.membros += curr.membros;
+                region.universidades += curr.universidades.length;
+                return acc;
+            }, []);
+
+            const top10Estados = [...dadosEstados]
+                .filter(estado => estado.membros > 0)
+                .sort((a, b) => b.membros - a.membros)
+                .slice(0, 10);
+            
+            const dadosScatter = dadosEstados
+                .filter(d => d.membros > 0)
+                .map(d => ({
+                    x: d.universidades.length,
+                    y: d.densidade,
+                    label: d.estado,
+                    membros: d.membros
+                }));
+            
+            // --- Geração dos Gráficos ---
+            const chartColors = {
+                blue: 'rgba(0, 90, 156, 0.7)',
+                green: 'rgba(40, 167, 69, 0.7)',
+                red: 'rgba(220, 53, 69, 0.7)',
+                yellow: 'rgba(255, 193, 7, 0.7)',
+                purple: 'rgba(108, 92, 231, 0.7)',
+                pie: ['#005A9C', '#28a745', '#ffc107', '#dc3545', '#6f42c1']
+            };
+            
+            // 1. Gráfico de Barras por Região
+            new Chart(document.getElementById('regiaoChart'), {
+                type: 'bar',
+                data: {
+                    labels: dadosPorRegiao.map(d => d.regiao),
+                    datasets: [{
+                        label: 'Total de Membros',
+                        data: dadosPorRegiao.map(d => d.membros),
+                        backgroundColor: chartColors.blue,
+                        borderColor: '#005A9C',
+                        borderWidth: 1
+                    }, {
+                        label: 'Universidades',
+                        data: dadosPorRegiao.map(d => d.universidades),
+                        backgroundColor: chartColors.green,
+                        borderColor: '#28a745',
+                        borderWidth: 1
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // 2. Gráfico de Barras Top 10 Estados
+            new Chart(document.getElementById('topEstadosChart'), {
+                type: 'bar',
+                data: {
+                    labels: top10Estados.map(d => d.estado),
+                    datasets: [{
+                        label: 'Nº de Membros',
+                        data: top10Estados.map(d => d.membros),
+                        backgroundColor: chartColors.red,
+                        borderColor: '#dc3545',
+                        borderWidth: 1
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y' }
+            });
+
+            // 3. Gráfico de Pizza por Região
+            new Chart(document.getElementById('pieRegiaoChart'), {
+                type: 'pie',
+                data: {
+                    labels: dadosPorRegiao.map(d => d.regiao),
+                    datasets: [{
+                        data: dadosPorRegiao.map(d => d.membros),
+                        backgroundColor: chartColors.pie,
+                        hoverOffset: 4
+                    }]
+                },
+                options: { responsive: true }
+            });
+            
+            // 4. Gráfico de Dispersão (Correlações)
+            new Chart(document.getElementById('scatterChart'), {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Estado',
+                        data: dadosScatter,
+                        backgroundColor: chartColors.purple
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Número de Universidades' } },
+                        y: { title: { display: true, text: 'Densidade (Membros por Universidade)' } }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const dataPoint = context.raw;
+                                    return `${dataPoint.label}: ${dataPoint.membros} membros`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- Preenchimento das listas de Correlações ---
+            const maiorDensidadeList = document.getElementById('maior-densidade-list');
+            [...dadosEstados].filter(e => e.densidade > 0)
+                .sort((a,b) => b.densidade - a.densidade)
+                .slice(0, 5)
+                .forEach(e => {
+                    const div = document.createElement('div');
+                    div.className = 'flex justify-between items-center text-blue-700';
+                    div.innerHTML = `<span class="font-medium">${e.estado}</span> <span class="font-bold text-blue-600 text-lg">${e.densidade.toFixed(2)}</span>`;
+                    maiorDensidadeList.appendChild(div);
+                });
+            
+            const semRepresentacaoList = document.getElementById('sem-representacao-list');
+             [...dadosEstados].filter(e => e.membros === 0)
+                .forEach(e => {
+                    const div = document.createElement('div');
+                    div.className = 'text-yellow-700';
+                    div.innerHTML = `<span class="font-medium">${e.estado}</span> - ${e.regiao}`;
+                    semRepresentacaoList.appendChild(div);
+                });
+        });
+    </script>
+
+</body>
+</html>
